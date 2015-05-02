@@ -28,7 +28,13 @@ int main()
 	return 0;
 }
 
-
+/*
+* Deep-first search
+* @param G Graph adjacency matrix
+* @param Ver vertice number
+* @param Vis array that indicate visited vertices
+* @param Res DFS algoritm result
+*/
 void DFS(bool G[Vertices][Vertices], int Ver, bool Vis[Vertices], vector<int>& Res)
 {
 	for (int i = 0; i < Vertices; i++)
@@ -39,7 +45,10 @@ void DFS(bool G[Vertices][Vertices], int Ver, bool Vis[Vertices], vector<int>& R
 		}
 	Res.push_back(Ver);
 }
-
+/*
+* Topological-sorting using DFS algorithm
+* @param G Graph adjacency matrix
+*/
 void TopologicSortWithDFS(bool G[Vertices][Vertices])
 {
 	bool Vis[Vertices] = { 0 };
@@ -56,7 +65,10 @@ void TopologicSortWithDFS(bool G[Vertices][Vertices])
 	for (vector<int>::const_reverse_iterator Iter = Res.rbegin(); Iter != Res.rend(); Iter++)
 		std::cout << *Iter << " ";
 }
-
+/*
+* Topological-sorting using source-removal algorithm
+* @param G Graph adjacency matrix
+*/
 void TopologicSortWithSR(bool G[Vertices][Vertices])
 {
 	vector<int> Res;
@@ -93,7 +105,11 @@ void TopologicSortWithSR(bool G[Vertices][Vertices])
 			std::cout << Res[i] << " ";
 	}
 }
-
+/*
+* Remove vertice from agency matrix
+* @param G Graph adjacency matrix
+* @param V number of vertice
+*/
 void RemoveVertice(bool G[Vertices][Vertices], int V)
 {
 	for (int i = 0; i < Vertices; i++)
