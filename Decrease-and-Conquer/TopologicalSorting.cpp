@@ -1,13 +1,14 @@
 #include <iostream>
 #include <vector>
-
+#include <set>
 using std::vector;
-
+using std::set;
 const int Vertices = 7;
 
-void TopologicSort(bool G[Vertices][Vertices]);
+void TopologicSortWithDFS(bool G[Vertices][Vertices]);
 void DFS(bool G[Vertices][Vertices], int Ver, bool Vis[Vertices], vector<int>& Res);
-
+void TopologicSortWithSR(bool G[Vertices][Vertices]);
+void RemoveVertice(bool G[Vertices][Vertices], int V);
 
 int main()
 {
@@ -22,7 +23,7 @@ int main()
 		{ 0, 0, 0, 0, 1, 1, 0 },
 	};
 
-	TopologicSort(G);
+	TopologicSortWithSR(G);
 
 	return 0;
 }
@@ -39,7 +40,7 @@ void DFS(bool G[Vertices][Vertices], int Ver, bool Vis[Vertices], vector<int>& R
 	Res.push_back(Ver);
 }
 
-void TopologicSort(bool G[Vertices][Vertices])
+void TopologicSortWithDFS(bool G[Vertices][Vertices])
 {
 	bool Vis[Vertices] = { 0 };
 	vector<int> Res;
@@ -53,5 +54,48 @@ void TopologicSort(bool G[Vertices][Vertices])
 	}
 
 	for (vector<int>::const_reverse_iterator Iter = Res.rbegin(); Iter != Res.rend(); Iter++)
-		std::cout << *Iter<<" ";
+		std::cout << *Iter << " ";
+}
+
+void TopologicSortWithSR(bool G[Vertices][Vertices])
+{
+	vector<int> Res;
+	set<int> DelVerts;
+	for (int i = 0; i < Vertices; i++)
+	{
+		if (DelVerts.find(i) != DelVerts.end())
+			continue;
+
+		int j = 0;
+		for (; j < Vertices && !G[j][i]; j++);
+
+
+		if (j == Vertices)
+		{
+			RemoveVertice(G, i);
+			DelVerts.insert(i);
+			Res.push_back(i);
+			if (DelVerts.size() == Vertices)
+				break;
+			i = -1;
+		}
+
+	}
+
+	if (DelVerts.size() != Vertices)
+	{
+		std::cout << "Graph has at least one cycle" << std::endl;
+		return;
+	}
+	else
+	{
+		for (int i = 0; i < Vertices; i++)
+			std::cout << Res[i] << " ";
+	}
+}
+
+void RemoveVertice(bool G[Vertices][Vertices], int V)
+{
+	for (int i = 0; i < Vertices; i++)
+		G[V][i] = 0;
 }
