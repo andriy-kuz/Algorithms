@@ -1,20 +1,32 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <set>
 using namespace std;
 
 void LexicographicOrder(vector<int>& Ar);
 list<vector<bool>> BRGC(int n);
+void HeapPermute(vector<int>& Ar, int N);
+void PowerSet(set<char> Set);
 
-const int size = 3;
+const int size = 4;
 
 int main()
 {
-	vector<int> Ar;;
+	vector<int> Ar;
 	for (int i = 1; i <= size; i++)
 		Ar.push_back(i);
 
-	LexicographicOrder(Ar);
+	//LexicographicOrder(Ar);
+	//HeapPermute(Ar, size);
+	PowerSet({'a','b','c'});
+	/*list<vector<bool>> L = BRGC(3);
+	for (auto l : L)
+	{
+		for (auto v : l)
+			cout << v << ",";
+		cout << endl;
+	}*/
 	return 0;
 }
 /*
@@ -81,10 +93,10 @@ list<vector<bool>> BRGC(int n)
 	else
 	{
 		list < vector<bool>> L1 = BRGC(n - 1);
-		list < vector<bool>> L2;
+		list < vector<bool>> L2 = L1;
 
-		for (auto Item : L1)
-			L2.push_front(Item);
+		//for (auto Item : L1)
+			//L2.push_front(Item);
 
 		for (list<vector<bool>>::iterator L1Iter = L1.begin(), L2Iter = L2.begin(); L1Iter != L1.end(); L1Iter++, L2Iter++)
 		{
@@ -96,5 +108,62 @@ list<vector<bool>> BRGC(int n)
 			L1.push_back(Item);
 
 		return L1;
+	}
+}
+
+void HeapPermute(vector<int>& Ar, int N)
+{
+	if (N == 1)
+	{
+		for (auto e : Ar)
+			cout << e << " ";
+		cout << endl;
+	}
+	else
+	{
+		for (int i = 1; i <= N; i++)
+		{
+			HeapPermute(Ar, N - 1);
+			if (N % 2)
+			{
+				std::swap(Ar[0], Ar[N - 1]);
+			}
+			else
+			{
+				std::swap(Ar[i-1], Ar[N - 1]);
+			}
+
+		}
+	}
+}
+
+void PowerSet(set<char> Set)
+{
+	if (Set.empty())
+	{
+		cout << "{}" << endl;
+		return;
+	}
+	else
+	{
+		set<char>::reverse_iterator a = Set.rbegin();
+		char val = *a;
+		Set.erase(val);
+		PowerSet(Set);
+		cout << "{" << val << "}" << endl;
+		for (auto ele : Set)
+		{
+			cout << "{";
+			cout << ele << ",";
+			cout << val;
+			cout << "}" << endl;
+		}
+		Set.insert(val);
+		/*cout << "{";
+		for (auto ele : Set)
+		{
+			cout << ele << ",";
+		}
+		cout << "}" << endl;*/
 	}
 }
