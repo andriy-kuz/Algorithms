@@ -75,8 +75,10 @@ int LomutoPartition(vector<int>& Ar, int l, int r)
 
 int HoarePartition(vector<int>& Ar, int l, int r)
 {
-	int p = Ar[l], s = l, i = l + 1, j = r;
+	if (l >= r)
+		return r;
 
+	int p = Ar[l], s = l, i = l + 1, j = r;
 	while (i < j)
 	{
 		while (i < r &&  Ar[i] < p)
